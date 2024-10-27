@@ -1,0 +1,19 @@
+{
+    "name": "susutawar/php-satusehat",
+    "description": "Wrapper api satu sehat",
+    "type": "library",
+    "license": "ISC",
+    "autoload": {
+        "psr-4": {
+            "PhpSatuSehat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SusuTawar",
+            "email": "realsusutawar@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
