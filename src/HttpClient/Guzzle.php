@@ -21,7 +21,7 @@ class Guzzle implements Base
     $headers = $response->getHeaders();
     $statusCode = $response->getStatusCode();
 
-    return new ResponseData($body, $headers, $statusCode);
+    return new ResponseData($statusCode, $headers, $body);
   }
 
 

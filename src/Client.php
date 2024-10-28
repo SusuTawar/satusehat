@@ -44,7 +44,7 @@ class Client {
   private function getUrl() {
     $baseUrl = "https://api-satusehat.kemkes.go.id";
     if ($this->sandbox) {
-      return "https://api-satusehat-stg.dto.kemkes.go.id";
+      $baseUrl = "https://api-satusehat-stg.dto.kemkes.go.id";
     }
     return [
       "v1" => [
@@ -64,10 +64,11 @@ class Client {
     $url = $this->getUrl()["v1"]["auth"] . "/accesstoken";
     $data = [
       'query' => ['grant_type' => 'client_credentials'],
-      'body' => [
+      'headers' => ['Content-Type' => 'application/json'],
+      'body' => json_encode([
         'client_id' => $this->clientId,
         'client_secret' => $this->clientSecret
-      ]
+      ])
     ];
     $response = $this->http->post($url, RequestData::create($data));
     $token = json_decode($response->body, true);
