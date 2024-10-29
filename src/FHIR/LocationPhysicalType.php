@@ -36,7 +36,7 @@ class LocationPhysicalType extends Base {
   ];
   public const RO = [
     "code" => "ro",
-    "display" => "Room",  
+    "display" => "Room",
     "definition" => "A space that is allocated as a room, it may have walls/roof etc., but does not require these.",
   ];
   public const BD = [

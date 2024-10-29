@@ -191,6 +191,14 @@ class Location {
     return $this;
   }
 
+  /**
+   * Menambahkan tipe fisik
+   *
+   * @param mixed $code tipe fisik
+   * @see \PhpSatuSehat\FHIR\LocationPhysicalType
+   * @return $this
+   * @throws Exception
+   */
   public function addPhysicalType($code) {
     $pysicalType = LocationPhysicalType::get($code);
     if (!$pysicalType) throw new \Exception("LocationPhysicalType untuk `$code` tidak ditemukan");
@@ -199,6 +207,20 @@ class Location {
       "code" => $pysicalType['code'],
       "display" => $pysicalType['display'],
     ];
+    return $this;
+  }
+
+  /**
+   * Organisasi yang mengelola lokasi
+   *
+   * @param mixed $organizationId id organisasi
+   * @return $this
+   */
+  public function setOrganization($organizationId) {
+    $this->data["managingOrganization"] = [
+      "reference" => "Organization/$organizationId"
+    ];
+
     return $this;
   }
 }

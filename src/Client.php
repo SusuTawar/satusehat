@@ -10,6 +10,14 @@ use PhpSatuSehat\HttpClient\RequestData;
 use PhpSatuSehat\Module\Location;
 use PhpSatuSehat\Module\Organization;
 
+/**
+ * Class Client
+ *
+ * @package PhpSatuSehat
+ *
+ * @property Location $location
+ * @property Organization $organization
+ */
 class Client {
   private $clientId;
   private $clientSecret;
