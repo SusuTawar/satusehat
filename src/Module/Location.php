@@ -3,7 +3,6 @@
 namespace PhpSatuSehat\Module;
 
 use PhpSatuSehat\Builder\Location as BuilderLocation;
-use PhpSatuSehat\HttpClient\RequestData;
 
 class Location extends BaseModule {
   public function get($filter = []) {

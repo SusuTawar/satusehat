@@ -3,7 +3,6 @@
 namespace PhpSatuSehat\Module;
 
 use PhpSatuSehat\Builder\Organization as BuilderOrganization;
-use PhpSatuSehat\HttpClient\RequestData;
 
 class Organization extends BaseModule {
 
