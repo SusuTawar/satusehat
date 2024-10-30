@@ -24,6 +24,9 @@ class Client {
   private $token;
   private $sandbox = false;
   private HttpClient $http;
+  private ?Organization $organizationIns = null;
+  private ?Location $location = null;
+  private array $eventListeners = [];
 
   public function __construct($sandbox, $clientId, $clientSecret, $token = null) {
     if (class_exists('GuzzleHttp\Client')) {
@@ -36,9 +39,21 @@ class Client {
     $this->clientSecret = $clientSecret;
     if ($token) {
       $this->token = $token;
-    } else {
+    }
+  }
+
+  public function init() {
+    $this->organizationIns = new Organization($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    $this->location = new Location($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    if (!$this->token) {
       $this->getToken();
     }
+    return $this;
+  }
+
+  public function addListener(EventListener $listener): int {
+    $this->eventListeners[] = $listener;
+    return count($this->eventListeners) - 1;
   }
 
   public function __get($name) {
@@ -72,22 +87,28 @@ class Client {
     $url = $this->getUrl()["v1"]["auth"] . "/accesstoken";
     $data = [
       'query' => ['grant_type' => 'client_credentials'],
-      'headers' => ['Content-Type' => 'application/json'],
-      'body' => json_encode([
-        'client_id' => $this->clientId,
-        'client_secret' => $this->clientSecret
-      ])
+      'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+      'body' => 'client_id=' . $this->clientId . '&client_secret=' . $this->clientSecret
     ];
     $response = $this->http->post($url, RequestData::create($data));
     $token = json_decode($response->body, true);
-    $this->token = $token['access_token'];
+    if (isset($token['access_token'])) {
+      $this->token = $token['access_token'];
+      $this->organizationIns->setToken($token['access_token']);
+      $this->location->setToken($token['access_token']);
+
+      foreach ($this->eventListeners as $listener) {
+        if ($listener->getEvent() !== EventListener::ON_TOKEN_RECEIVED) return;
+        $listener->handle($token);
+      }
+    }
   }
 
-  public function organization() {
-    return new Organization($this->http, $this->token, $this->sandbox);
+  public function organization(): Organization {
+    return $this->organizationIns;
   }
 
-  public function location() {
-    return new Location($this->http, $this->token, $this->sandbox);
+  public function location(): Location {
+    return $this->location;
   }
 }
