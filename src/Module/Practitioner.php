@@ -7,7 +7,11 @@ class Organization extends BaseModule {
     return $this->sendRequest("get", "/Practitioner", null, $filter);
   }
 
-  public function find($nik) {
+  public function find($id) {
+    return $this->get('get', "/Practitioner/$id");
+  }
+
+  public function byNik($nik) {
     return $this->get([
       "identifier" => "https://fhir.kemkes.go.id/id/nik|$nik"
     ]);
