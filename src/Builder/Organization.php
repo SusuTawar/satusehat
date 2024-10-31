@@ -16,8 +16,8 @@ use PhpSatuSehat\FHIR\OrganizationType;
  * @see http://hl7.org/fhir/R4/organization-definitions.html
  * @package PhpSatuSehat\Builder
  */
-class Organization {
-  private $data = [
+class Organization extends ResourceBuilder{
+  protected $data = [
     "resourceType" => "Organization",
     "active" => true,
     "identifier" => [],
@@ -27,18 +27,6 @@ class Organization {
     "address" => [],
     "partOf" => []
   ];
-
-  public function __construct(array $data = []) {
-    $this->data = array_merge($this->data, $data);
-  }
-
-  public static function create(array $data) {
-    return new Organization($data);
-  }
-
-  public function toJson() {
-    return json_encode($this->data);
-  }
 
   /**
    * Menambahkan identitas organisasi

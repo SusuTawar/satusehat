@@ -15,8 +15,8 @@ use PhpSatuSehat\FHIR\LocationPhysicalType;
  * @see http://hl7.org/fhir/R4/location-definitions.html
  * @package PhpSatuSehat\Builder
  */
-class Location {
-  private $data = [
+class Location extends ResourceBuilder {
+  protected $data = [
     "resourceType" => "Location",
     "identifier" => [],
     "status" => "active",
@@ -31,18 +31,6 @@ class Location {
     "position" => [],
     "managingOrganization" => [],
   ];
-
-  public function __construct(array $data = []) {
-    $this->data = array_merge($this->data, $data);
-  }
-
-  public static function create(array $data) {
-    return new self($data);
-  }
-
-  public function toJson() {
-    return json_encode($this->data);
-  }
 
   /**
    * Nama lokasi

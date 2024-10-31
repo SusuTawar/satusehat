@@ -2,7 +2,7 @@
 
 namespace PhpSatuSehat\Module;
 
-class Organization extends BaseModule {
+class Practitioner extends BaseModule {
   public function get($filter = []) {
     return $this->sendRequest("get", "/Practitioner", null, $filter);
   }

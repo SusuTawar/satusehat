@@ -7,8 +7,11 @@ use PhpSatuSehat\HttpClient\Base as HttpClient;
 use PhpSatuSehat\HttpClient\Curl;
 use PhpSatuSehat\HttpClient\Guzzle;
 use PhpSatuSehat\HttpClient\RequestData;
+use PhpSatuSehat\Module\Encounter;
 use PhpSatuSehat\Module\Location;
 use PhpSatuSehat\Module\Organization;
+use PhpSatuSehat\Module\Patient;
+use PhpSatuSehat\Module\Practitioner;
 
 /**
  * Class Client
@@ -24,8 +27,11 @@ class Client {
   private $token;
   private $sandbox = false;
   private HttpClient $http;
+  private ?Practitioner $practioner = null;
+  private ?Patient $patient = null;
   private ?Organization $organizationIns = null;
   private ?Location $location = null;
+  private ?Encounter $encounter = null;
   private array $eventListeners = [];
 
   public function __construct($sandbox, $clientId, $clientSecret, $token = null) {
@@ -45,6 +51,9 @@ class Client {
   public function init() {
     $this->organizationIns = new Organization($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
     $this->location = new Location($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    $this->practioner = new Practitioner($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    $this->patient = new Patient($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    $this->encounter = new Encounter($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
     if (!$this->token) {
       $this->getToken();
     }
@@ -104,11 +113,23 @@ class Client {
     }
   }
 
+  public function practitioner(): Practitioner {
+    return $this->practioner;
+  }
+
+  public function patient(): Patient {
+    return $this->patient;
+  }
+
   public function organization(): Organization {
     return $this->organizationIns;
   }
 
   public function location(): Location {
     return $this->location;
+  }
+
+  public function encounter(): Encounter {
+    return $this->encounter;
   }
 }

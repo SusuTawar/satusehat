@@ -13,9 +13,9 @@ use PhpSatuSehat\FHIR\EncounterStatus;
  * @see http://hl7.org/fhir/R4/encounter-definitions.html
  * @package PhpSatuSehat\Builder
  */
-class Encounter
+class Encounter extends ResourceBuilder
 {
-  private $data = [
+  protected $data = [
     "resourceType" => "Encounter",
     "status" => "arrived",
     "class" => null,
@@ -28,27 +28,12 @@ class Encounter
     "identifier" => null,
   ];
 
-  public function __construct($data)
-  {
-    $this->data = array_merge($this->data, $data);
-  }
-
-  public static function create(array $data)
-  {
-    return new Encounter($data);
-  }
-
-  public function toJson()
-  {
-    return json_encode($this->data);
-  }
-
   /**
    * Set uuid encounter
    * 
    * hanya digunakan untuk PUT
    * 
-   * @param string $uuid 
+   * @param string $uuid
    * @return $this
    */
   public function setId($uuid)
