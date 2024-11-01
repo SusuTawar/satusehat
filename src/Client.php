@@ -7,6 +7,7 @@ use PhpSatuSehat\HttpClient\Base as HttpClient;
 use PhpSatuSehat\HttpClient\Curl;
 use PhpSatuSehat\HttpClient\Guzzle;
 use PhpSatuSehat\HttpClient\RequestData;
+use PhpSatuSehat\Module\Condition;
 use PhpSatuSehat\Module\Encounter;
 use PhpSatuSehat\Module\Location;
 use PhpSatuSehat\Module\Organization;
@@ -32,6 +33,7 @@ class Client {
   private ?Organization $organizationIns = null;
   private ?Location $location = null;
   private ?Encounter $encounter = null;
+  private ?Condition $condition = null;
   private array $eventListeners = [];
 
   public function __construct($sandbox, $clientId, $clientSecret, $token = null) {
@@ -54,6 +56,7 @@ class Client {
     $this->practioner = new Practitioner($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
     $this->patient = new Patient($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
     $this->encounter = new Encounter($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
+    $this->condition = new Condition($this->http, $this->getUrl()["v1"]["fhir"], $this->token, fn () => $this->getToken());
     if (!$this->token) {
       $this->getToken();
     }
@@ -131,5 +134,9 @@ class Client {
 
   public function encounter(): Encounter {
     return $this->encounter;
+  }
+
+  public function condition(): Condition {
+    return $this->condition;
   }
 }
