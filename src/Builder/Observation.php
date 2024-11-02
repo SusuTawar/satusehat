@@ -12,7 +12,7 @@ use PhpSatuSehat\FHIR\ObservationStatus;
  * @see http://hl7.org/fhir/R4/observation-definitions.html
  * @package PhpSatuSehat\Builder
  */
-class observation extends ResourceBuilder
+class Observation extends ResourceBuilder
 {
   protected $data = [
     'resourceType' => 'Observation',
